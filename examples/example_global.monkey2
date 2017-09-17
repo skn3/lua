@@ -2,13 +2,11 @@ Namespace demo
 
 #Import "<lua>"
 #Import "<std>"
-#Import "<mojo>"
 
 #Import "assets/example_global.lua"
 
 Using lua..
 Using std..
-Using mojo..
 
 Const filename:String = AssetsDir()+"example_global.lua"
 

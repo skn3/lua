@@ -1,2 +1,2 @@
-myGlobal1 = 123
+myGlobal1 = 123.456
 myGlobal2 = 123
