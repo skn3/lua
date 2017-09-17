@@ -36,10 +36,12 @@ Namespace lua
 #Import "lib/lua-5.3.4/src/lvm.c"
 #Import "lib/lua-5.3.4/src/lzio.c"
 
+#Import "wrapper.monkey2"
+
 'external
 Extern
 
-' consts
+'consts
 Const LUA_OK:Int
 Const LUA_YIELD:Int
 Const LUA_ERRRUN:Int
@@ -51,8 +53,8 @@ Const LUA_ERRERR:Int
 Const LUA_MULTRET:Int
 
 Alias LuaType:Int
-Alias lua_Number:Float
-Alias lua_Integer:Int
+Alias lua_Number:Double
+Alias lua_Integer:Long
 
 Const LUA_TNONE:LuaType
 Const LUA_TNIL:LuaType
@@ -65,7 +67,7 @@ Const LUA_TFUNCTION:LuaType
 Const LUA_TUSERDATA:LuaType
 Const LUA_TTHREAD:LuaType
 
-' types
+'types
 Struct lua_Unsigned
 End
 Struct lua_KContext
@@ -95,8 +97,8 @@ Function lua_atpanic:lua_CFunction(L:lua_State Ptr, panicf:lua_CFunction)
 Function lua_call:Void(L:lua_State Ptr, nargs:Int, nresults:Int)
 Function lua_callk:Void(L:lua_State Ptr, nargs:Int, nresults:Int, ctx:lua_KContext, k:lua_KFunction)
 Function lua_close:Void(L:lua_State Ptr)
-Function lua_checkstack:Bool(L:lua_State Ptr, n:Int)
-Function lua_compare:Bool(L:lua_State Ptr, index1:Int, index2:Int, op:Int)
+Function lua_checkstack:Int(L:lua_State Ptr, n:Int)
+Function lua_compare:Int(L:lua_State Ptr, index1:Int, index2:Int, op:Int)
 Function lua_concat:Void(L:lua_State Ptr, n:Int)
 Function lua_copy:Void(L:lua_State Ptr, fromidx:Int, toidx:Int)
 Function lua_createtable:Void(L:lua_State Ptr, narr:Int, nrec:Int)
@@ -108,25 +110,25 @@ Function lua_getfield:Int(L:lua_State Ptr, index:Int, k:CString)
 Function lua_getextraspace:Void Ptr(L:lua_State Ptr)
 Function lua_getglobal:Int(L:lua_State Ptr, name:CString)
 Function lua_geti:Int(L:lua_State Ptr, index:Int, i:Int)
-Function lua_getmetatable:Bool(L:lua_State Ptr, index:Int)
+Function lua_getmetatable:Int(L:lua_State Ptr, index:Int)
 Function lua_gettable:Int(L:lua_State Ptr, index:Int)
 Function lua_gettop:Int(L:lua_State Ptr)
 Function lua_getuservalue:Int(L:lua_State Ptr, index:Int)
 Function lua_insert:Void(L:lua_State Ptr, index:Int)
-Function lua_isboolean:Bool(L:lua_State Ptr, index:Int)
-Function lua_iscfunction:Bool(L:lua_State Ptr, index:Int)
-Function lua_isfunction:Bool(L:lua_State Ptr, index:Int)
-Function lua_isinteger:Bool(L:lua_State Ptr, index:Int)
-Function lua_islightuserdata:Bool(L:lua_State Ptr, index:Int)
-Function lua_isnil:Bool(L:lua_State Ptr, index:Int)
-Function lua_isnone:Bool(L:lua_State Ptr, index:Int)
-Function lua_isnoneornil:Bool(L:lua_State Ptr, index:Int)
-Function lua_isnumber:Bool(L:lua_State Ptr, index:Int)
-Function lua_isstring:Bool(L:lua_State Ptr, index:Int)
-Function lua_istable:Bool(L:lua_State Ptr, index:Int)
-Function lua_isthread:Bool(L:lua_State Ptr, index:Int)
-Function lua_isuserdata:Bool(L:lua_State Ptr, index:Int)
-Function lua_isyieldable:Bool(L:lua_State Ptr)
+Function lua_isboolean:Int(L:lua_State Ptr, index:Int)
+Function lua_iscfunction:Int(L:lua_State Ptr, index:Int)
+Function lua_isfunction:Int(L:lua_State Ptr, index:Int)
+Function lua_isinteger:Int(L:lua_State Ptr, index:Int)
+Function lua_islightuserdata:Int(L:lua_State Ptr, index:Int)
+Function lua_isnil:Int(L:lua_State Ptr, index:Int)
+Function lua_isnone:Int(L:lua_State Ptr, index:Int)
+Function lua_isnoneornil:Int(L:lua_State Ptr, index:Int)
+Function lua_isnumber:Int(L:lua_State Ptr, index:Int)
+Function lua_isstring:Int(L:lua_State Ptr, index:Int)
+Function lua_istable:Int(L:lua_State Ptr, index:Int)
+Function lua_isthread:Int(L:lua_State Ptr, index:Int)
+Function lua_isuserdata:Int(L:lua_State Ptr, index:Int)
+Function lua_isyieldable:Int(L:lua_State Ptr)
 Function lua_len:Void(L:lua_State Ptr, index:Int)
 Function lua_load:Int(L:lua_State Ptr, reader:lua_Reader, data:Void Ptr, chunkname:CString, mode:CString)
 Function lua_newstate:lua_State Ptr(f:lua_Alloc, ud:Void Ptr)
@@ -138,7 +140,7 @@ Function lua_numbertointeger:lua_Integer(n:Float, i:lua_Integer Ptr)
 Function lua_pcall:Int(L:lua_State Ptr, nargs:Int, nresults:Int, msgh:Int)
 Function lua_pcallk:Int(L:lua_State Ptr, nargs:Int, nresults:Int, msgh:Int, ctx:lua_KContext, k:lua_KFunction)
 Function lua_pop:Void(L:lua_State Ptr, n:Int)
-Function lua_pushboolean:Void(L:lua_State Ptr, b:Bool)
+Function lua_pushboolean:Void(L:lua_State Ptr, b:Int)
 Function lua_pushcclosure:Void(L:lua_State Ptr, fn:lua_CFunction, n:Int)
 Function lua_pushcfunction:Void(L:lua_State Ptr, f:lua_CFunction)
 'varargs lua_pushfstring
@@ -152,9 +154,9 @@ Function lua_pushstring:CString(L:lua_State Ptr, s:CString)
 Function lua_pushthread:Int(L:lua_State Ptr)
 Function lua_pushvalue:Void(L:lua_State Ptr, index:Int)
 'va_list lua_pushvfstring
-Function lua_rawequal:Bool(L:lua_State Ptr, index1:Int, index2:Int)
+Function lua_rawequal:Int(L:lua_State Ptr, index1:Int, index2:Int)
 Function lua_rawget:Int(L:lua_State Ptr, index:Int)
-Function lua_rawgeti:Void(L:lua_State Ptr, index:Int, n:Int)
+Function lua_rawgeti:Int(L:lua_State Ptr, index:Int, n:lua_Integer)
 Function lua_rawgetp:Int(L:lua_State Ptr, index:Int, p:Void Ptr)
 Function lua_rawlen:Int(L:lua_State Ptr, index:Int)
 Function lua_rawset:Void(L:lua_State Ptr, index:Int)
@@ -175,21 +177,21 @@ Function lua_settop:Void(L:lua_State Ptr, index:Int)
 Function lua_setuservalue:Void(L:lua_State Ptr, index:Int)
 Function lua_status:Void(L:lua_State Ptr)
 Function lua_stringtonumber:Int(L:lua_State Ptr, s:CString)
-Function lua_toboolean:Bool(L:lua_State Ptr, index:Int)
+Function lua_toboolean:Int(L:lua_State Ptr, index:Int)
 Function lua_tocfunction:lua_CFunction(L:lua_State Ptr, index:Int)
 Function lua_tointeger:lua_Integer(L:lua_State Ptr, index:Int)
-Function lua_tointegerx:lua_Integer(L:lua_State Ptr, index:Int, isnum:Bool Ptr)
+Function lua_tointegerx:lua_Integer(L:lua_State Ptr, index:Int, isnum:Int Ptr)
 Function lua_tolstring:CString(L:lua_State Ptr, index:Int, len:Int Ptr)
 Function lua_tonumber:lua_Number(L:lua_State Ptr, index:Int)
-Function lua_tonumberx:lua_Number(L:lua_State Ptr, index:Int, isnum:Bool Ptr)
-Function lua_topointer:Void Ptr(L:lua_State Ptr, index:Int)
+Function lua_tonumberx:lua_Number(L:lua_State Ptr, index:Int, isnum:Int Ptr)
+'Function lua_topointer:Void Ptr(L:lua_State Ptr, index:Int)
 Function lua_tostring:CString(L:lua_State Ptr, index:Int)
 Function lua_tothread:lua_State Ptr(L:lua_State Ptr, index:Int)
 Function lua_touserdata:Void Ptr(L:lua_State Ptr, index:Int)
 Function lua_type:Int(L:lua_State Ptr, index:Int)
 Function lua_typename:CString(L:lua_State Ptr, tp:Int)
 Function lua_upvalueindex:Int(i:Int)
-Function lua_version:Float(L:lua_State Ptr)
+Function lua_version:lua_Number Ptr(L:lua_State Ptr)
 Function lua_xmove:Void(from:lua_State Ptr, _to:lua_State Ptr, n:Int)
 Function lua_yield:Int(L:lua_State Ptr, nresults:Int)
 Function lua_yieldk:Int(L:lua_State Ptr, nresults:Int, ctx:lua_KContext, k:lua_KFunction)
@@ -208,7 +210,7 @@ Function lua_setupvalue:CString(L:lua_State Ptr, funcindex:Int, n:Int)
 Function lua_upvalueid:Void Ptr(L:lua_State Ptr, funcindex:Int, n:Int)
 Function lua_upvaluejoin:Void(L:lua_State Ptr, funcindex1:Int, n1:Int, funcindex2:Int, n2:Int)
 
-'auxiliary
+'aux
 Function luaL_addchar:Void(B:luaL_Buffer Ptr, c:UByte)
 Function luaL_addlstring:Void(B:luaL_Buffer Ptr, s:CString, l:Int)
 Function luaL_addsize:Void(B:luaL_Buffer Ptr, n:Int)
@@ -229,14 +231,14 @@ Function luaL_checkstring:CString(L:lua_State Ptr, arg:Int)
 Function luaL_checktype:Void(L:lua_State Ptr, arg:Int, t:Int)
 Function luaL_checkudata:Void Ptr(L:lua_State Ptr, arg:Int, tname:CString)
 Function luaL_checkversion:Void(L:lua_State Ptr)
-Function luaL_dofile:Bool(L:lua_State Ptr, filename:CString)
-Function luaL_dostring:Bool(L:lua_State Ptr, str:CString)
+Function luaL_dofile:Int(L:lua_State Ptr, filename:CString)
+Function luaL_dostring:Int(L:lua_State Ptr, str:CString)
 'varargs Function luaL_error:Int(L:lua_State Ptr, )
 Function luaL_execresult:Int(L:lua_State Ptr, stat:Int)
 Function luaL_fileresult:Int(L:lua_State Ptr, stat:Int, filename:CString)
 Function luaL_getmetafield:Int(L:lua_State Ptr, obj:Int, e:CString)
 Function luaL_getmetatable:Int(L:lua_State Ptr, tname:CString)
-Function luaL_getsubtable:Bool(L:lua_State Ptr, idx:Int, fname:CString)
+Function luaL_getsubtable:Int(L:lua_State Ptr, idx:Int, fname:CString)
 Function luaL_gsub:CString(L:lua_State Ptr, s:CString, p:CString, r:CString)
 Function luaL_len:Int(L:lua_State Ptr, index:Int)
 Function luaL_loadbuffer:Int(L:lua_State Ptr, buff:CString, sz:Int, name:CString)

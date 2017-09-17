@@ -7,6 +7,7 @@ extern "C" {
 
 #include "lib/lua-5.3.4/src/lua.h"
 #include "lib/lua-5.3.4/src/lualib.h"
+#include "lib/lua-5.3.4/src/ldebug.h"
 #include "lib/lua-5.3.4/src/lauxlib.h"
 
 #ifdef __cplusplus
