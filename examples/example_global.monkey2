@@ -4,11 +4,13 @@ Namespace demo
 #Import "<std>"
 #Import "<mojo>"
 
+#Import "assets/example_global.lua"
+
 Using lua..
 Using std..
 Using mojo..
 
-Const filename:String = "modules/lua/examples/assets/example_global.lua"
+Const filename:String = AssetsDir()+"example_global.lua"
 
 Function Main()
     Local state := luaL_newstate()
@@ -33,13 +35,13 @@ Function Main()
 	Endif
 	
 	'lets get a global from the script
-	lua_getglobal(state, "myGlobal")
+	lua_getglobal(state, "myGlobal1")
 	Local myGlobal:Float = lua_tonumber(state, -1)
 	
 	Local myInt:Int
 	lua_numbertointeger(myGlobal, Varptr myInt)
 	
-	Print "myGlobal = "+myGlobal
+	Print "myGlobal1 = "+myGlobal
 	Print "myInt = "+myInt
 	
 	Print "done!"
